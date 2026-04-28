@@ -1,0 +1,308 @@
+/* Print Stylesheet untuk Soal Matematika */
+
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 1.5cm;
+    orphans: 3;
+    widows: 3;
+  }
+
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.4;
+    color: #000;
+  }
+
+  h1 {
+    font-size: 20pt;
+    font-weight: bold;
+    color: #000;
+    margin: 0 0 12pt 0;
+    padding: 0 0 8pt 0;
+    border-bottom: 2pt solid #000;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #000;
+    margin: 12pt 0 8pt 0;
+    padding: 0 0 4pt 0;
+    border-bottom: 1pt solid #333;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #000;
+    margin: 8pt 0 6pt 0;
+    page-break-after: avoid;
+  }
+
+  h4, h5, h6 {
+    font-size: 10pt;
+    font-weight: bold;
+    color: #000;
+    margin: 6pt 0 4pt 0;
+    page-break-after: avoid;
+  }
+
+  /* Keep table with content */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8pt 0;
+    page-break-inside: avoid;
+    font-size: 9pt;
+  }
+
+  thead {
+    display: table-header-group; /* Repeat header on each page */
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+
+  td, th {
+    border: 1pt solid #000;
+    padding: 4pt 6pt;
+    text-align: center;
+    word-break: break-word;
+  }
+
+  th {
+    background: #f5f5f5 !important;
+    font-weight: bold;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Alternate row colors for readability */
+  tbody tr:nth-child(even) td {
+    background: #f9f9f9 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  pre {
+    background: #f5f5f5 !important;
+    border: 1pt solid #999;
+    padding: 6pt;
+    border-radius: 0;
+    page-break-inside: avoid;
+    font-size: 9pt;
+    overflow: visible;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  code {
+    background: #f5f5f5 !important;
+    padding: 1pt 3pt;
+    border-radius: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 9pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  blockquote {
+    border-left: 4pt solid #999;
+    padding-left: 12pt;
+    margin-left: 0;
+    page-break-inside: avoid;
+  }
+
+  /* Question styling */
+  strong {
+    font-weight: bold;
+    color: #000;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  /* Lists */
+  ul, ol {
+    margin: 6pt 0;
+    padding-left: 20pt;
+    page-break-inside: avoid;
+  }
+
+  li {
+    margin: 3pt 0;
+    page-break-inside: avoid;
+  }
+
+  /* Links */
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  a[href]:after {
+    content: none; /* Don't show URLs */
+  }
+
+  /* Horizontal rules */
+  hr {
+    background: #000;
+    color: #000;
+    height: 1pt;
+    border: none;
+    margin: 16pt 0;
+    page-break-after: avoid;
+  }
+
+  /* Avoid orphans and widows */
+  p {
+    orphans: 3;
+    widows: 3;
+    page-break-inside: avoid;
+  }
+
+  /* Images */
+  img {
+    max-width: 100%;
+    page-break-inside: avoid;
+  }
+
+  /* Prevent hiding of important elements */
+  .no-print,
+  .navbar,
+  .sidebar,
+  .nav,
+  .advertisement {
+    display: none !important;
+  }
+
+  /* Page breaks */
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  /* Force no page break for certain elements */
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure text is readable */
+  body, p, a, h1, h2, h3, h4, h5, h6, li, td, th {
+    color: #000 !important;
+  }
+}
+
+/* Screen version */
+@media screen {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  h1 {
+    color: #1a5f4a;
+    border-bottom: 3px solid #1a5f4a;
+    padding-bottom: 10px;
+  }
+
+  h2 {
+    color: #1a5f4a;
+    border-bottom: 2px solid #1a5f4a;
+    padding-bottom: 5px;
+  }
+
+  h3 {
+    color: #2d7c5f;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 15px 0;
+    font-size: 12px;
+  }
+
+  th {
+    background-color: #1a5f4a;
+    color: white;
+    font-weight: bold;
+    padding: 8px;
+  }
+
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+
+  tbody tr:hover {
+    background-color: #f5f5f5;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    border-left: 4px solid #1a5f4a;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  code {
+    background-color: #f0f0f0;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+  }
+
+  a {
+    color: #1a5f4a;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .no-print {
+    display: block;
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    font-size: 12px;
+  }
+
+  .info-box {
+    background: #e7f3ff;
+    border-left: 4px solid #1a5f4a;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pandoc SOAL_LOMBA_MATEMATIKA_KELAS_2_SD.md -o SOAL_LOMBA_MATEMATIKA_KELAS_2_SD.pdf)",
+      "Bash(pandoc SOAL_DISCOVERY_OF_CHAMPIONS_KELAS_1-6_SD.md -o SOAL_DISCOVERY_OF_CHAMPIONS_KELAS_1-6_SD.pdf)",
+      "Bash(pandoc SOAL_LEVEL_1_KELAS_1-2_SD.md -o SOAL_LEVEL_1_KELAS_1-2_SD.pdf)",
+      "Bash(pip install *)",
+      "Bash(pandoc SOAL_LOMBA_MATEMATIKA_KELAS_2_SD.md -t html5 -o temp1.html)",
+      "Bash(pandoc temp1.html -o SOAL_LOMBA_MATEMATIKA_KELAS_2_SD.pdf)",
+      "Bash(pandoc SOAL_LOMBA_MATEMATIKA_KELAS_2_SD.md -s --css style.css -o SOAL_LOMBA_MATEMATIKA_KELAS_2_SD.html)",
+      "Bash(pandoc SOAL_DISCOVERY_OF_CHAMPIONS_KELAS_1-6_SD.md -s --css style.css -o SOAL_DISCOVERY_OF_CHAMPIONS_KELAS_1-6_SD.html)",
+      "Bash(pandoc SOAL_LEVEL_1_KELAS_1-2_SD.md -s --css style.css -o SOAL_LEVEL_1_KELAS_1-2_SD.html)",
+      "Bash(pip3 install *)",
+      "Bash(python3)",
+      "Bash(pandoc SOAL_VARIATIF_LEVEL_1_KELAS_1-2_SD.md -s -o SOAL_VARIATIF_LEVEL_1_KELAS_1-2_SD.html)",
+      "Bash(sed -i '' 's|</head>|<link rel=\"stylesheet\" href=\"style-print.css\">\\\\n</head>|g' SOAL_VARIATIF_LEVEL_1_KELAS_1-2_SD.html)"
+    ]
+  }
+}

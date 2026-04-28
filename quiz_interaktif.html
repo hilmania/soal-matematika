@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Matematika Interaktif - Kelas 1-2 SD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .question-container {
+            margin-bottom: 40px;
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-number {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+        }
+
+        .option:hover {
+            background: #f0f0f0;
+            border-color: #667eea;
+        }
+
+        .option input[type="radio"] {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            accent-color: #667eea;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .option.correct {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .option.correct::after {
+            content: '✓ Benar!';
+            color: #4caf50;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .option.incorrect {
+            background: #ffebee;
+            border-color: #f44336;
+        }
+
+        .option.incorrect::after {
+            content: '✗ Salah';
+            color: #f44336;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        .feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #f44336;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-next {
+            background: #667eea;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-next:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-next:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-prev {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-prev:hover {
+            background: #e0e0e0;
+        }
+
+        .score-display {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .score-display.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .score-number {
+            font-size: 72px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .score-text {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .score-detail {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .btn-reset {
+            background: #4caf50;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .btn-reset:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+        }
+
+        .category-selector {
+            margin-bottom: 20px;
+        }
+
+        .category-selector label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .category-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .category-btn {
+            padding: 12px;
+            background: #f0f0f0;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover {
+            border-color: #667eea;
+            background: #f9f9f9;
+        }
+
+        .category-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .start-screen h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .start-screen p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn-start {
+            background: #667eea;
+            color: white;
+            padding: 15px 40px;
+            font-size: 18px;
+        }
+
+        .btn-start:hover {
+            background: #5568d3;
+        }
+
+        .question-info {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .results-summary {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .results-summary h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-correct {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .result-incorrect {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .category-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .question-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧮 Kuis Matematika Interaktif</h1>
+            <p id="headerSubtitle">Kelas 1-2 SD</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Start Screen -->
+            <div id="startScreen" class="start-screen">
+                <h2>Selamat Datang!</h2>
+                <p>Pilih kategori soal yang ingin dikerjakan, kemudian klik "Mulai Kuis"</p>
+
+                <div class="category-selector">
+                    <label>Pilih Kategori Soal:</label>
+                    <div class="category-buttons">
+                        <button class="category-btn active" data-category="arithmetic">
+                            🔢 Arithmetic<br><small>(Operasi Hitung)</small>
+                        </button>
+                        <button class="category-btn" data-category="logic">
+                            🧩 Numeric Logic<br><small>(Teka-teki)</small>
+                        </button>
+                        <button class="category-btn" data-category="spatial">
+                            📐 Spatial<br><small>(Ruang)</small>
+                        </button>
+                        <button class="category-btn" data-category="memory">
+                            🧠 Memory<br><small>(Ingatan)</small>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="btn-start" id="startBtn">Mulai Kuis</button>
+            </div>
+
+            <!-- Quiz Container -->
+            <div id="quizContainer" style="display: none;">
+                <div class="question-info">
+                    <span id="questionInfo">Soal 1 dari 10</span>
+                </div>
+
+                <div id="questionList"></div>
+
+                <div class="button-group">
+                    <button class="btn-prev" id="prevBtn" style="display: none;">← Soal Sebelumnya</button>
+                    <button class="btn-next" id="nextBtn" disabled>Soal Berikutnya →</button>
+                </div>
+            </div>
+
+            <!-- Score Screen -->
+            <div id="scoreScreen" class="score-display">
+                <h2>Hasil Akhir</h2>
+                <div class="score-number" id="scoreNumber">0/10</div>
+                <div class="score-text" id="scoreText">Skor: 0%</div>
+                <div class="score-detail" id="scoreDetail"></div>
+                <div class="results-summary" id="resultsSummary"></div>
+                <button class="btn-reset" id="resetBtn">🔄 Kerjakan Ulang</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample Questions Data
+        const questionsData = {
+            arithmetic: [
+                {
+                    id: 1,
+                    question: "Ani punya 5 permen. Ibu memberikan 3 permen lagi. Berapa permen Ani sekarang?",
+                    options: ["6", "7", "8", "9"],
+                    correct: 1,
+                    explanation: "5 + 3 = 8 permen"
+                },
+                {
+                    id: 2,
+                    question: "Ada 10 apel di meja. Budi mengambil 4 apel. Berapa apel yang tersisa?",
+                    options: ["5", "6", "7", "8"],
+                    correct: 2,
+                    explanation: "10 - 4 = 6 apel"
+                },
+                {
+                    id: 3,
+                    question: "3 + ___ = 10. Angka yang hilang adalah?",
+                    options: ["6", "7", "8", "9"],
+                    correct: 1,
+                    explanation: "3 + 7 = 10"
+                },
+                {
+                    id: 4,
+                    question: "Berapa hasil dari 6 × 2?",
+                    options: ["10", "11", "12", "13"],
+                    correct: 2,
+                    explanation: "6 × 2 = 12"
+                },
+                {
+                    id: 5,
+                    question: "20 ÷ 4 = ?",
+                    options: ["4", "5", "6", "7"],
+                    correct: 1,
+                    explanation: "20 ÷ 4 = 5"
+                },
+                {
+                    id: 6,
+                    question: "Rina punya uang Rp 5.000. Dia membeli kue seharga Rp 2.000. Sisa uangnya?",
+                    options: ["Rp 2.000", "Rp 3.000", "Rp 4.000", "Rp 7.000"],
+                    correct: 1,
+                    explanation: "Rp 5.000 - Rp 2.000 = Rp 3.000"
+                },
+                {
+                    id: 7,
+                    question: "Jam tunjuk pukul 3. Berapa jam lagi sampai pukul 6?",
+                    options: ["2 jam", "3 jam", "4 jam", "5 jam"],
+                    correct: 1,
+                    explanation: "Dari jam 3 ke jam 6 = 3 jam"
+                },
+                {
+                    id: 8,
+                    question: "Benang panjangnya 10 cm. Pita panjangnya 15 cm. Total panjang keduanya?",
+                    options: ["20 cm", "25 cm", "30 cm", "35 cm"],
+                    correct: 1,
+                    explanation: "10 cm + 15 cm = 25 cm"
+                },
+                {
+                    id: 9,
+                    question: "Jika 1 apel = 2 jeruk, maka 3 apel = berapa jeruk?",
+                    options: ["4 jeruk", "5 jeruk", "6 jeruk", "7 jeruk"],
+                    correct: 2,
+                    explanation: "3 × 2 = 6 jeruk"
+                },
+                {
+                    id: 10,
+                    question: "Berapa digit 3 dalam bilangan 33?",
+                    options: ["1", "2", "3", "4"],
+                    correct: 1,
+                    explanation: "Digit 3 muncul 2 kali dalam 33"
+                }
+            ],
+            logic: [
+                {
+                    id: 1,
+                    question: "Bilangan ini ganjil, lebih dari 5, kurang dari 10. Bilangan apa?",
+                    options: ["6", "7", "8", "9"],
+                    correct: 1,
+                    explanation: "7 adalah bilangan ganjil antara 5 dan 10"
+                },
+                {
+                    id: 2,
+                    question: "Lanjutkan deret: 1, 3, 5, 7, ?",
+                    options: ["8", "9", "10", "11"],
+                    correct: 1,
+                    explanation: "Deret bilangan ganjil: +2 setiap kali"
+                },
+                {
+                    id: 3,
+                    question: "Deret: 10, 8, 6, 4, ?",
+                    options: ["1", "2", "3", "4"],
+                    correct: 1,
+                    explanation: "Deret menurun: -2 setiap kali"
+                },
+                {
+                    id: 4,
+                    question: "Pola: 2, 4, 8, 16, ?",
+                    options: ["24", "30", "32", "36"],
+                    correct: 2,
+                    explanation: "Deret dikalikan 2: 2×2=4, 4×2=8, 8×2=16, 16×2=32"
+                },
+                {
+                    id: 5,
+                    question: "Deret: 3, 6, 9, 12, ?",
+                    options: ["13", "14", "15", "16"],
+                    correct: 2,
+                    explanation: "Deret kelipatan 3: +3 setiap kali"
+                },
+                {
+                    id: 6,
+                    question: "Jika x + 2 = 8, maka x = ?",
+                    options: ["5", "6", "7", "8"],
+                    correct: 1,
+                    explanation: "x = 8 - 2 = 6"
+                },
+                {
+                    id: 7,
+                    question: "Apakah 5 + 3 = 8?",
+                    options: ["Benar", "Salah", "Mungkin", "Tidak tahu"],
+                    correct: 0,
+                    explanation: "5 + 3 = 8 adalah pernyataan yang BENAR"
+                },
+                {
+                    id: 8,
+                    question: "Jika dikalikan 3, kemudian dikurangi 2, hasilnya 7. Bilangan awal?",
+                    options: ["2", "3", "4", "5"],
+                    correct: 2,
+                    explanation: "3 × 3 - 2 = 9 - 2 = 7"
+                },
+                {
+                    id: 9,
+                    question: "Jika A > B dan B > C, maka A ... C",
+                    options: ["Lebih kecil dari", "Lebih besar dari", "Sama dengan", "Tidak bisa ditentukan"],
+                    correct: 1,
+                    explanation: "Jika A > B dan B > C, maka A > C"
+                },
+                {
+                    id: 10,
+                    question: "Berapa bilangan ganjil antara 1 sampai 10?",
+                    options: ["3", "4", "5", "6"],
+                    correct: 2,
+                    explanation: "Bilangan ganjil 1-10: 1, 3, 5, 7, 9 = 5 bilangan"
+                }
+            ],
+            spatial: [
+                {
+                    id: 1,
+                    question: "Hadap utara, putar kanan. Menghadap ke arah?",
+                    options: ["Timur", "Barat", "Selatan", "Utara"],
+                    correct: 0,
+                    explanation: "Dari utara putar kanan (searah jarum jam) = Timur"
+                },
+                {
+                    id: 2,
+                    question: "Hadap barat, putar kiri. Menghadap ke arah?",
+                    options: ["Timur", "Barat", "Selatan", "Utara"],
+                    correct: 3,
+                    explanation: "Dari barat putar kiri (berlawanan jarum jam) = Utara"
+                },
+                {
+                    id: 3,
+                    question: "Mulai hadap timur, putar 180 derajat. Menghadap?",
+                    options: ["Timur", "Barat", "Selatan", "Utara"],
+                    correct: 1,
+                    explanation: "Putar 180° dari timur = Barat"
+                },
+                {
+                    id: 4,
+                    question: "Berapa banyak sisi pada sebuah persegi?",
+                    options: ["3", "4", "5", "6"],
+                    correct: 1,
+                    explanation: "Persegi memiliki 4 sisi"
+                },
+                {
+                    id: 5,
+                    question: "Berapa banyak sudut pada sebuah segitiga?",
+                    options: ["2", "3", "4", "5"],
+                    correct: 1,
+                    explanation: "Segitiga memiliki 3 sudut"
+                },
+                {
+                    id: 6,
+                    question: "Berapa sisi dalam 1 heksagon?",
+                    options: ["5", "6", "7", "8"],
+                    correct: 1,
+                    explanation: "Heksagon memiliki 6 sisi"
+                },
+                {
+                    id: 7,
+                    question: "Jika segitiga diputar 90 derajat, bentuknya menjadi?",
+                    options: ["Persegi panjang", "Berlian/Rhombus", "Lingkaran", "Segitiga"],
+                    correct: 3,
+                    explanation: "Segitiga tetap segitiga meski diputar"
+                },
+                {
+                    id: 8,
+                    question: "Persegi punya berapa garis simetri?",
+                    options: ["2", "3", "4", "5"],
+                    correct: 2,
+                    explanation: "Persegi memiliki 4 garis simetri (vertikal, horizontal, dan 2 diagonal)"
+                },
+                {
+                    id: 9,
+                    question: "Kubus dilihat dari atas terlihat seperti?",
+                    options: ["Segitiga", "Persegi", "Lingkaran", "Persegi panjang"],
+                    correct: 1,
+                    explanation: "Tampilan atas kubus adalah bentuk persegi"
+                },
+                {
+                    id: 10,
+                    question: "Jika pola berulang: ABC ABC ABC..., huruf ke-8 apa?",
+                    options: ["A", "B", "C", "D"],
+                    correct: 1,
+                    explanation: "Posisi 8: (8 mod 3) = 2 = B"
+                }
+            ],
+            memory: [
+                {
+                    id: 1,
+                    question: "Hafal: 5 3 8 1 9. Angka ke-3 adalah?",
+                    options: ["3", "8", "5", "1"],
+                    correct: 1,
+                    explanation: "Urutan: 5(1), 3(2), 8(3), 1(4), 9(5) → 8 di posisi ke-3"
+                },
+                {
+                    id: 2,
+                    question: "Hafal: 2 7 4 6 3. Angka pertama?",
+                    options: ["2", "3", "4", "7"],
+                    correct: 0,
+                    explanation: "Angka pertama dalam urutan adalah 2"
+                },
+                {
+                    id: 3,
+                    question: "Hafal: 9 2 6 4 7. Angka terakhir?",
+                    options: ["4", "7", "9", "6"],
+                    correct: 1,
+                    explanation: "Angka terakhir dalam urutan adalah 7"
+                },
+                {
+                    id: 4,
+                    question: "Hafal: 1 5 3 8 2. Urutan dari terkecil ke terbesar?",
+                    options: ["1 2 3 5 8", "1 3 2 5 8", "8 5 3 2 1", "2 1 3 5 8"],
+                    correct: 0,
+                    explanation: "Urutan dari kecil ke besar: 1, 2, 3, 5, 8"
+                },
+                {
+                    id: 5,
+                    question: "Hafal: 6 2 9 4 7. Ada berapa angka ganjil?",
+                    options: ["2", "3", "4", "5"],
+                    correct: 1,
+                    explanation: "Angka ganjil: 9, 7 = 2 angka... wait, 6 genap, 2 genap, 9 ganjil, 4 genap, 7 ganjil = 2"
+                },
+                {
+                    id: 6,
+                    question: "Hafal: Senin, Selasa, Rabu, Kamis. Hari ke-3?",
+                    options: ["Senin", "Selasa", "Rabu", "Kamis"],
+                    correct: 2,
+                    explanation: "Urutan hari: Senin(1), Selasa(2), Rabu(3), Kamis(4)"
+                },
+                {
+                    id: 7,
+                    question: "Hafal: A B C D E. Huruf ke-4?",
+                    options: ["A", "B", "C", "D"],
+                    correct: 3,
+                    explanation: "Urutan huruf: A(1), B(2), C(3), D(4), E(5)"
+                },
+                {
+                    id: 8,
+                    question: "Hafal: 2 5 3 7. Jumlah semua?",
+                    options: ["15", "16", "17", "18"],
+                    correct: 2,
+                    explanation: "2 + 5 + 3 + 7 = 17"
+                },
+                {
+                    id: 9,
+                    question: "Hafal: 4 6 8 2. Angka terbesar + terkecil?",
+                    options: ["8", "9", "10", "11"],
+                    correct: 2,
+                    explanation: "Terbesar: 8, Terkecil: 2 → 8 + 2 = 10"
+                },
+                {
+                    id: 10,
+                    question: "Hafal: 1 2 3 1 2 3 1 2 3. Angka ke-8?",
+                    options: ["1", "2", "3", "4"],
+                    correct: 1,
+                    explanation: "Pola berulang: posisi 8 = 2"
+                }
+            ]
+        };
+
+        // Global variables
+        let currentCategory = 'arithmetic';
+        let currentQuestionIndex = 0;
+        let answers = {};
+        let quizStarted = false;
+        let currentQuestions = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupCategoryButtons();
+            setupStartButton();
+            setupNavigationButtons();
+            setupResetButton();
+        });
+
+        function setupCategoryButtons() {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.dataset.category;
+                });
+            });
+        }
+
+        function setupStartButton() {
+            document.getElementById('startBtn').addEventListener('click', startQuiz);
+        }
+
+        function setupNavigationButtons() {
+            document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+            document.getElementById('prevBtn').addEventListener('click', previousQuestion);
+        }
+
+        function setupResetButton() {
+            document.getElementById('resetBtn').addEventListener('click', resetQuiz);
+        }
+
+        function startQuiz() {
+            quizStarted = true;
+            currentQuestionIndex = 0;
+            answers = {};
+            currentQuestions = [...questionsData[currentCategory]];
+
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('scoreScreen').classList.remove('show');
+
+            updateHeaderSubtitle();
+            displayQuestion();
+        }
+
+        function updateHeaderSubtitle() {
+            const categoryNames = {
+                arithmetic: 'Arithmetic - Operasi Hitung',
+                logic: 'Numeric Logic - Teka-teki',
+                spatial: 'Spatial - Ruang',
+                memory: 'Memory - Ingatan'
+            };
+            document.getElementById('headerSubtitle').textContent = categoryNames[currentCategory];
+        }
+
+        function displayQuestion() {
+            const questionList = document.getElementById('questionList');
+            questionList.innerHTML = '';
+
+            currentQuestions.forEach((question, index) => {
+                const container = document.createElement('div');
+                container.className = 'question-container' + (index === currentQuestionIndex ? ' active' : '');
+
+                let optionsHTML = '';
+                question.options.forEach((option, optionIndex) => {
+                    const isAnswered = answers[question.id];
+                    const isCorrect = optionIndex === question.correct;
+                    const isSelected = answers[question.id] === optionIndex;
+
+                    let optionClass = 'option';
+                    if (isAnswered !== undefined) {
+                        if (isSelected && isCorrect) {
+                            optionClass += ' correct';
+                        } else if (isSelected && !isCorrect) {
+                            optionClass += ' incorrect';
+                        } else if (!isSelected && isCorrect) {
+                            optionClass += ' correct';
+                        }
+                    }
+
+                    optionsHTML += `
+                        <label class="${optionClass}">
+                            <input type="radio" name="question-${question.id}" value="${optionIndex}"
+                                ${isSelected ? 'checked' : ''}
+                                ${isAnswered !== undefined ? 'disabled' : ''}
+                                onchange="selectAnswer(${question.id}, ${optionIndex})">
+                            <span>${String.fromCharCode(65 + optionIndex)}</span>. ${option}
+                        </label>
+                    `;
+                });
+
+                let feedbackHTML = '';
+                if (answers[question.id] !== undefined) {
+                    const isCorrect = answers[question.id] === question.correct;
+                    feedbackHTML = `
+                        <div class="feedback show ${isCorrect ? 'correct' : 'incorrect'}">
+                            ${isCorrect ? '✓ Benar!' : '✗ Salah'} - ${question.explanation}
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `
+                    <div class="question-number">Soal ${index + 1} dari ${currentQuestions.length}</div>
+                    <div class="question-text">${question.question}</div>
+                    <div class="options">${optionsHTML}</div>
+                    ${feedbackHTML}
+                `;
+
+                questionList.appendChild(container);
+            });
+
+            updateProgress();
+            updateButtonStates();
+            updateQuestionInfo();
+        }
+
+        function selectAnswer(questionId, optionIndex) {
+            answers[questionId] = optionIndex;
+            displayQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function updateButtonStates() {
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const currentQuestion = currentQuestions[currentQuestionIndex];
+
+            nextBtn.disabled = answers[currentQuestion.id] === undefined;
+            prevBtn.style.display = currentQuestionIndex > 0 ? 'block' : 'none';
+
+            if (currentQuestionIndex === currentQuestions.length - 1) {
+                nextBtn.textContent = answers[currentQuestion.id] !== undefined ? '✓ Lihat Hasil' : 'Jawab dulu';
+            } else {
+                nextBtn.textContent = 'Soal Berikutnya →';
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function updateQuestionInfo() {
+            document.getElementById('questionInfo').textContent =
+                `Soal ${currentQuestionIndex + 1} dari ${currentQuestions.length}`;
+        }
+
+        function showResults() {
+            let correct = 0;
+            currentQuestions.forEach(question => {
+                if (answers[question.id] === question.correct) {
+                    correct++;
+                }
+            });
+
+            const percentage = Math.round((correct / currentQuestions.length) * 100);
+            const message = getMessage(percentage);
+
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('scoreScreen').classList.add('show');
+            document.getElementById('scoreNumber').textContent = `${correct}/${currentQuestions.length}`;
+            document.getElementById('scoreText').textContent = `Skor: ${percentage}%`;
+            document.getElementById('scoreDetail').textContent = message;
+
+            // Generate results summary
+            let summaryHTML = '<h3>📊 Rincian Jawaban:</h3>';
+            let correctCount = 0;
+            let incorrectCount = 0;
+
+            currentQuestions.forEach((question, index) => {
+                const isCorrect = answers[question.id] === question.correct;
+                if (isCorrect) correctCount++;
+                else incorrectCount++;
+
+                const resultClass = isCorrect ? 'result-correct' : 'result-incorrect';
+                summaryHTML += `
+                    <div class="result-item">
+                        <span>Soal ${index + 1}</span>
+                        <span class="${resultClass}">${isCorrect ? '✓ Benar' : '✗ Salah'}</span>
+                    </div>
+                `;
+            });
+
+            summaryHTML += `
+                <div class="result-item" style="margin-top: 10px; padding-top: 10px; border-top: 2px solid #667eea;">
+                    <span><strong>Total Benar</strong></span>
+                    <span class="result-correct">${correctCount}</span>
+                </div>
+                <div class="result-item">
+                    <span><strong>Total Salah</strong></span>
+                    <span class="result-incorrect">${incorrectCount}</span>
+                </div>
+            `;
+
+            document.getElementById('resultsSummary').innerHTML = summaryHTML;
+        }
+
+        function getMessage(percentage) {
+            if (percentage === 100) return '🌟 Sempurna! Kamu sangat jago!';
+            if (percentage >= 80) return '🎉 Luar biasa! Kamu sangat pintar!';
+            if (percentage >= 60) return '👍 Bagus! Terus belajar ya!';
+            if (percentage >= 40) return '📚 Cukup baik! Belajar lebih giat lagi!';
+            return '💪 Jangan menyerah! Coba lagi ya!';
+        }
+
+        function resetQuiz() {
+            document.getElementById('startScreen').style.display = 'block';
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('scoreScreen').classList.remove('show');
+            currentQuestionIndex = 0;
+            answers = {};
+            quizStarted = false;
+            document.querySelectorAll('.category-btn').forEach((btn, index) => {
+                btn.classList.toggle('active', index === 0);
+            });
+            currentCategory = 'arithmetic';
+        }
+    </script>
+</body>
+</html>
